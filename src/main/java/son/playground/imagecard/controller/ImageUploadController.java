@@ -1,10 +1,12 @@
 package son.playground.imagecard.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import son.playground.imagecard.service.ImageUploadService;
@@ -27,6 +29,19 @@ public class ImageUploadController {
         }
 
         return "redirect:/main/list";
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        byte[] imageBytes = this.imageUploadService.getImage(id);
+
+        if (imageBytes != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
 
