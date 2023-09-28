@@ -37,7 +37,6 @@ public class ImageUploadService {
             throw new IllegalStateException("cannot save empty file");
         }
 
-
         String savedImageName = uploadPath + File.separator + uuid.toString() + file.getOriginalFilename();
         Path savedPath = Paths.get(savedImageName);
 
