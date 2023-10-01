@@ -17,4 +17,12 @@ public class CardService {
         return this.cardRepository.findAll();
     }
 
+    // 수정 날짜 기준 내림차순
+    public List<Card> getCardAllByModifiedAtDesc() {
+        return this.cardRepository.findAllByOrderByModifiedAtDesc();
+    }
+
+    public void deleteCard(Long id) {
+        this.cardRepository.deleteById(id);
+    }
 }

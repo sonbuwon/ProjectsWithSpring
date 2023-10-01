@@ -29,7 +29,10 @@ public class CardController {
     @GetMapping("/main/list")
     public ResponseEntity<?> getList() {
         try {
-            List<Card> cards = this.cardService.getCardAll();
+            // 저장 순서대로 출력
+//            List<Card> cards = this.cardService.getCardAll();
+            // 수정 날짜 기준 내림차순 출력
+            List<Card> cards = this.cardService.getCardAllByModifiedAtDesc();
             return new ResponseEntity<>(cards, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<String>("Failed to get list", HttpStatus.BAD_REQUEST);
@@ -56,6 +59,16 @@ public class CardController {
             return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> removeCard(@PathVariable Long id) {
+        try {
+            this.cardService.deleteCard(id);
+            return new ResponseEntity<>("card deleted successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("failed to delete card", HttpStatus.NOT_FOUND);
         }
     }
 }
